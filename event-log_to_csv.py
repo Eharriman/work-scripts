@@ -71,6 +71,9 @@ def write_to_csv(rows, all_keys, output_file_path):
         for row in rows:
             writer.writerow(row)
 
+    print(f"Event log converted to csv. File saved to: {output_file_path}")
+    print(f"Total rows: {len(rows)}")
+
 
 """
 # Sort keys
