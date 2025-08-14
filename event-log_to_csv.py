@@ -11,8 +11,8 @@ Description: This script converts a FortiGate log export (.log txt) to a csv. Ev
 import csv
 import re
 
-def prompt_user_filters():
 
+def prompt_user_filters():
     filters = []
     add_filters = input("Do you want to apply filters? (y/n): ").strip().lower()
     if add_filters != 'y':
@@ -29,12 +29,37 @@ def prompt_user_filters():
             break
     return filters
 
-def filter_check(entry, filters):
 
+def filter_check(entry, filters):
+    # Function applies filter to row entry
+    # Check header exists in entry and allowed values align
     for key, allowed_values in filters:
         if key not in entry or entry[key] not in allowed_values:
             return False
     return True
+
+
+def log_to_dict(input_file_path, filters):
+    # Parse FortiGate logs entries into dicts and applies user filters
+
+    pattern = re.compile(r'(\w+)=("[^"]*"|\S+)')
+
+    rows = []
+
+    all_keys = set()
+
+    # Construct keys for column headers and row data
+    with open(input_file_path, "r") as f:
+        for line in f:
+            entry = {}
+            for match in pattern.finditer(line):
+                key = match.group(1)
+                val = match.group(2).strip('"')
+                entry[key] = val
+                all_keys.add(key)
+            if filter_check(entry, filters):
+                rows.append(entry)
+
 
 # File paths
 input_file = r'[Input location]'
@@ -68,7 +93,8 @@ with open(output_file, "w", newline='') as csvfile:
     for row in rows:
         writer.writerow(row)
 
-#print(f"Event log converted to csv. CSV file saved to: {output_file}")
+
+# print(f"Event log converted to csv. CSV file saved to: {output_file}")
 
 
 def main():
@@ -77,4 +103,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
