@@ -11,6 +11,24 @@ Description: This script converts a FortiGate log export (.log txt) to a csv. Ev
 import csv
 import re
 
+def prompt_user_filters():
+
+    filters = []
+    add_filters = input("Do you want to apply filters? (y/n): ").strip().lower()
+    if add_filters != 'y':
+        return filters
+
+    while True:
+        key = input("Enter column/header name for filter application: ").strip()
+        value_string = input("Enter allowed value(s) (comma-separated for multiple): ").strip()
+        values = [v.strip() for v in value_string.split(",")]
+
+        # Check for continuation prompt
+        cont = input("Do you wish to add another filter? (y/n): ").strip().lower()
+        if cont != 'y':
+            break
+    return filters
+
 # File paths
 input_file = r'[Input location]'
 output_file = r'[Output location]]'
