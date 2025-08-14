@@ -29,6 +29,13 @@ def prompt_user_filters():
             break
     return filters
 
+def filter_check(entry, filters):
+
+    for key, allowed_values in filters:
+        if key not in entry or entry[key] not in allowed_values:
+            return False
+    return True
+
 # File paths
 input_file = r'[Input location]'
 output_file = r'[Output location]]'
@@ -61,4 +68,13 @@ with open(output_file, "w", newline='') as csvfile:
     for row in rows:
         writer.writerow(row)
 
-print(f"Event log converted to csv. CSV file saved to: {output_file}")
+#print(f"Event log converted to csv. CSV file saved to: {output_file}")
+
+
+def main():
+    "Run parse fnc. here"
+
+
+if __name__ == "__main__":
+    main()
+
