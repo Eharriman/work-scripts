@@ -61,28 +61,18 @@ def log_to_dict(input_file_path, filters):
                 rows.append(entry)
 
 
-# File paths
-input_file = r'[Input location]'
-output_file = r'[Output location]]'
+def write_to_csv(rows, all_keys, output_file_path):
+    fieldnames = sorted(all_keys)
 
-# Regex to extract column headers passed on ""= pattern
-pattern = re.compile(r'(\w+)=("[^"]*"|\S+)')
+    # Construct csv
+    with open(output_file, "w", newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        for row in rows:
+            writer.writerow(row)
 
-rows = []
 
-all_keys = set()
-
-# Construct keys for column headers and row data
-with open(input_file, "r") as f:
-    for line in f:
-        entry = {}
-        for match in pattern.finditer(line):
-            key = match.group(1)
-            val = match.group(2).strip('"')
-            entry[key] = val
-            all_keys.add(key)
-        rows.append(entry)
-
+"""
 # Sort keys
 fieldnames = sorted(all_keys)
 
@@ -95,7 +85,7 @@ with open(output_file, "w", newline='') as csvfile:
 
 
 # print(f"Event log converted to csv. CSV file saved to: {output_file}")
-
+"""
 
 def main():
     "Run parse fnc. here"
