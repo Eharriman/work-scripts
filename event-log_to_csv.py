@@ -92,6 +92,18 @@ with open(output_file, "w", newline='') as csvfile:
 
 def main():
     "Run parse fnc. here"
+    input_file = input("Enter log path file (full file path): ").strip()
+    output_file = input("Enter csv path file (full file path): ").strip()
+
+    try:
+        filters = prompt_user_filters()
+        rows, all_keys = log_to_dict(rows, filters)
+        if not rows:
+            print("No events match filters.")
+        write_to_csv(rows, all_keys, output_file)
+
+    except Exception as error:
+        print(f"Error: {error}")
 
 
 if __name__ == "__main__":
