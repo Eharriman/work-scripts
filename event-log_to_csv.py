@@ -59,6 +59,7 @@ def log_to_dict(input_file_path, filters):
                 all_keys.add(key)
             if filter_check(entry, filters):
                 rows.append(entry)
+    return rows, all_keys
 
 
 def write_to_csv(rows, all_keys, output_file_path):
